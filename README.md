@@ -30,7 +30,7 @@ There are two selectable file extension:
 
 <img width="429" alt="image" src="https://github.com/Biyanci/close_caption_converter/assets/98510207/700a98f0-2fad-4d98-a240-3169a755546f">
 
-For lrc, there are four caption styles is surpported: 
+For lrc, there are four caption styles surpported: 
 
 The caption from Bilibili
 
@@ -49,7 +49,7 @@ The caption from Bilibili
 <img width="160" alt="image" src="https://github.com/Biyanci/close_caption_converter/assets/98510207/57feaee2-4068-4586-8527-baea801298ba">
 
 
-For srt, there are three caption styles is surpported:
+For srt, there are three caption styles surpported:
 
 The caption from Bilibili
 
