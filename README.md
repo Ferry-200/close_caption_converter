@@ -2,6 +2,8 @@
 
 English README: https://github.com/Biyanci/close_caption_converter/blob/master/readme-English.md
 
+API来源https://github.com/Nemo2011/bilibili-api.git
+
 基于Flutter
 
 从B站下载CC字幕并转换成.lrc或.srt
