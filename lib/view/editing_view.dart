@@ -12,16 +12,18 @@ class EditingView extends StatefulWidget {
 
 class _EditingViewState extends State<EditingView> {
   final resultEditingController = TextEditingController();
+  late final List argument;
 
   @override
   void dispose() {
     super.dispose();
     resultEditingController.dispose();
+    argument.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-    final argument = ModalRoute.of(context)!.settings.arguments as List;
+    argument = ModalRoute.of(context)!.settings.arguments as List;
     resultEditingController.text = argument[0];
     final videoTitle =
         (argument[1] as String).replaceAll("/", "").replaceAll("\\", "");
@@ -57,11 +59,12 @@ class _EditingViewState extends State<EditingView> {
                     "${await getStorageDir()}${Platform.pathSeparator}$videoTitle.srt";
               }
               var lyricFile = await File(lyricFileDir).create(recursive: true);
-              lyricFile.writeAsString(resultEditingController.text);
+              await lyricFile.writeAsString(resultEditingController.text);
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("save to $lyricFileDir")));
-                Navigator.pushNamed(context, "/");
+                await Navigator.pushNamed(context, "/");
+                argument.clear();
               }
             },
             icon: const Icon(Icons.save),
