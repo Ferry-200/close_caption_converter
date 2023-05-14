@@ -46,6 +46,7 @@ class _EditingViewState extends State<EditingView> {
         title: const Text("Edit"),
         actions: [
           IconButton(
+            tooltip: "Save",
             onPressed: () async {
               late String lyricFileDir;
               if (selectedFileExtention == FileExtension.lrc) {
