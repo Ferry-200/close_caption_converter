@@ -1,6 +1,7 @@
 # close_caption_converter
 
 中文https://github.com/Biyanci/close_caption_converter/blob/master/readme-Chinese.md
+
 A Flutter project.
 
 Download the close caption from Bilibili and then convert it to .lrc or .srt. 
