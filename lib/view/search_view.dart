@@ -158,25 +158,6 @@ class CaptionListTile extends StatelessWidget {
       ),
     );
 
-    var captionActions = Row(
-      children: [
-        IconButton(
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              "CaptionDetailView",
-              arguments: captionMap["body"],
-            );
-          },
-          icon: const Icon(Icons.fullscreen),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.save),
-        ),
-      ],
-    );
-
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
@@ -193,7 +174,17 @@ class CaptionListTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               captionOverview,
-              captionActions,
+              IconButton(
+                tooltip: "Open fullscreen",
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    "CaptionDetailView",
+                    arguments: captionMap["body"],
+                  );
+                },
+                icon: const Icon(Icons.fullscreen),
+              ),
             ],
           ),
         ),
