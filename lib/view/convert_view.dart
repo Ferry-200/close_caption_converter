@@ -14,20 +14,23 @@ class _ConvertViewState extends State<ConvertView> {
   final delayEditingController = TextEditingController();
   var selectedFileExtention = ValueNotifier<FileExtension>(FileExtension.lrc);
   var selectedCaptionStyle = ValueNotifier<CaptionStyle>(CaptionStyle.first);
+  late final List arguments;
 
   @override
   void dispose() {
     super.dispose();
     titleEditingController.dispose();
+    delayEditingController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final arguments = ModalRoute.of(context)!.settings.arguments as List;
+    arguments = ModalRoute.of(context)!.settings.arguments as List;
     final captionRawList = arguments[0] as List;
     final videoTitle = arguments[1] as String;
 
     titleEditingController.text = videoTitle;
+    delayEditingController.text = "0.0";
 
     String toLyricTime({required String from, double? delay}) {
       late String minuteString;
@@ -149,7 +152,7 @@ class _ConvertViewState extends State<ConvertView> {
         title: const Text("Convert"),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
+        onPressed: () async {
           if (titleEditingController.text.trim().isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Title can't be empty.")));
@@ -299,9 +302,7 @@ class _ConvertViewState extends State<ConvertView> {
                               value: FileExtension.srt, child: Text("srt")),
                         ],
                         onChanged: (fileExtension) {
-                          setState(() {
-                            selectedFileExtention.value = fileExtension!;
-                          });
+                          selectedFileExtention.value = fileExtension!;
                         },
                       ),
                     ),
@@ -322,82 +323,88 @@ class _ConvertViewState extends State<ConvertView> {
               ),
             ),
             AnimatedBuilder(
-              animation: selectedCaptionStyle,
+              animation: selectedFileExtention,
               builder: (context, child) {
-                if (selectedFileExtention.value == FileExtension.srt) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: const Color.fromRGBO(121, 116, 126, 1)),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(4.0)),
-                    ),
-                    child: ButtonTheme(
-                      layoutBehavior: ButtonBarLayoutBehavior.constrained,
-                      alignedDropdown: true,
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                          isExpanded: true,
-                          value: selectedCaptionStyle.value,
-                          items: const [
-                            DropdownMenuItem(
-                              value: CaptionStyle.first,
-                              child: Text("only first line"),
+                return AnimatedBuilder(
+                  animation: selectedCaptionStyle,
+                  builder: (context, child) {
+                    if (selectedFileExtention.value == FileExtension.srt) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: const Color.fromRGBO(121, 116, 126, 1)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(4.0)),
+                        ),
+                        child: ButtonTheme(
+                          layoutBehavior: ButtonBarLayoutBehavior.constrained,
+                          alignedDropdown: true,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              isExpanded: true,
+                              value: selectedCaptionStyle.value,
+                              items: const [
+                                DropdownMenuItem(
+                                  value: CaptionStyle.first,
+                                  child: Text("only first line"),
+                                ),
+                                DropdownMenuItem(
+                                  value: CaptionStyle.firstSeparatorSecond,
+                                  child: Text("first | second"),
+                                ),
+                                DropdownMenuItem(
+                                  value: CaptionStyle.second,
+                                  child: Text("only second line"),
+                                ),
+                              ],
+                              onChanged: (captionStyle) {
+                                selectedCaptionStyle.value = captionStyle!;
+                              },
                             ),
-                            DropdownMenuItem(
-                              value: CaptionStyle.firstSeparatorSecond,
-                              child: Text("first | second"),
-                            ),
-                            DropdownMenuItem(
-                              value: CaptionStyle.second,
-                              child: Text("only second line"),
-                            ),
-                          ],
-                          onChanged: (captionStyle) {
-                            selectedCaptionStyle.value = captionStyle!;
-                          },
+                          ),
+                        ),
+                      );
+                    }
+                    return Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color.fromRGBO(121, 116, 126, 1)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4.0)),
+                      ),
+                      child: ButtonTheme(
+                        layoutBehavior: ButtonBarLayoutBehavior.constrained,
+                        alignedDropdown: true,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            isExpanded: true,
+                            value: selectedCaptionStyle.value,
+                            items: const [
+                              DropdownMenuItem(
+                                value: CaptionStyle.first,
+                                child: Text("only first line"),
+                              ),
+                              DropdownMenuItem(
+                                value: CaptionStyle.firstWrapSecond,
+                                child: Text("first \\n second"),
+                              ),
+                              DropdownMenuItem(
+                                value: CaptionStyle.firstSeparatorSecond,
+                                child: Text("first | second"),
+                              ),
+                              DropdownMenuItem(
+                                value: CaptionStyle.second,
+                                child: Text("only second line"),
+                              ),
+                            ],
+                            onChanged: (captionStyle) {
+                              selectedCaptionStyle.value = captionStyle!;
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: const Color.fromRGBO(121, 116, 126, 1)),
-                    borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                  ),
-                  child: ButtonTheme(
-                    layoutBehavior: ButtonBarLayoutBehavior.constrained,
-                    alignedDropdown: true,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        isExpanded: true,
-                        value: selectedCaptionStyle.value,
-                        items: const [
-                          DropdownMenuItem(
-                            value: CaptionStyle.first,
-                            child: Text("only first line"),
-                          ),
-                          DropdownMenuItem(
-                            value: CaptionStyle.firstWrapSecond,
-                            child: Text("first \\n second"),
-                          ),
-                          DropdownMenuItem(
-                            value: CaptionStyle.firstSeparatorSecond,
-                            child: Text("first | second"),
-                          ),
-                          DropdownMenuItem(
-                            value: CaptionStyle.second,
-                            child: Text("only second line"),
-                          ),
-                        ],
-                        onChanged: (captionStyle) {
-                          selectedCaptionStyle.value = captionStyle!;
-                        },
-                      ),
-                    ),
-                  ),
+                    );
+                  },
                 );
               },
             ),
