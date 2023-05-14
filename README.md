@@ -1,5 +1,7 @@
 # CC字幕转换
 
+English README: https://github.com/Biyanci/close_caption_converter/blob/master/readme-English.md
+
 基于Flutter
 
 从B站下载CC字幕并转换成.lrc或.srt
